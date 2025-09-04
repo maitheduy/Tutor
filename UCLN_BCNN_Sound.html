@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Cùng Trí Vương</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Nunito&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #FF6B8B;
+            --color-secondary: #4ECDC4;
+            --color-accent: #FFE66D;
+            --color-background: #F7F9FF;
+            --color-text: #1A535C;
+            --color-success: #4CAF50;
+            --color-warning: #FF9800;
+            --color-error: #F44336;
+            --color-card: #FFFFFF;
+        }
+        
+        body {
+            font-family: 'Comic Neue', 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #FF9A8B 0%, #FF6A88 55%, #FF99AC 100%);
+            color: var(--color-text);
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+            min-height: 100vh;
+        }
+        
+        #container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: var(--color-card);
+            padding: 25px;
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border: 5px solid var(--color-accent);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #FF6B8B, #4ECDC4, #FFE66D, #FF6B8B);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        
+        .header h1 {
+            display: inline;
+            font-size: 2.2rem;
+            color: var(--color-primary);
+            text-shadow: 2px 2px 0px #FFE66D;
+            margin: 0 15px;
+        }
+        
+        .emoji {
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .subtitle {
+            color: var(--color-secondary);
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+        
+        .instruction {
+            background-color: #FFF8E1;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 3px dashed #FFD54F;
+            font-size: 1.1rem;
+        }
+        
+        .input-group {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .number-input {
+            position: relative;
+        }
+        
+        .number-input label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--color-primary);
+        }
+        
+        input[type="number"] {
+            width: 140px;
+            padding: 15px;
+            border: 3px solid var(--color-secondary);
+            border-radius: 15px;
+            font-size: 1.3rem;
+            text-align: center;
+            background-color: #E0F7FA;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: var(--color-text);
+            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 15px rgba(255, 107, 139, 0.4);
+            transform: scale(1.05);
+        }
+        
+        .btn-group {
+            margin: 25px 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        button {
+            padding: 15px 25px;
+            margin: 5px;
+            border: none;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        button:active {
+            transform: translateY(2px);
+        }
+        
+        .btn-primary { 
+            background: linear-gradient(145deg, #FF6B8B, #FF8EA1);
+            border-bottom: 4px solid #D45C77;
+        }
+        
+        .btn-secondary { 
+            background: linear-gradient(145deg, #4ECDC4, #6EDDD6);
+            border-bottom: 4px solid #3AA99E;
+        }
+        
+        .btn-danger { 
+            background: linear-gradient(145deg, #9c27b0, #BA68C8);
+            border-bottom: 4px solid #7B1FA2;
+        }
+        
+        .btn-random { 
+            background: linear-gradient(145deg, #FF9800, #FFB74D);
+            border-bottom: 4px solid #F57C00;
+        }
+        
+        #result {
+            margin-top: 30px;
+            font-size: 1.2rem;
+            color: var(--color-success);
+            line-height: 1.8;
+            padding: 25px;
+            background-color: #E8F5E9;
+            border-radius: 20px;
+            border-left: 8px solid var(--color-success);
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Bố cục phân tích 2 cột */
+        .factor-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+            gap: 25px;
+        }
+        
+        .factor-column {
+            flex: 1;
+            text-align: left;
+            font-family: monospace;
+            font-size: 1.3rem;
+            background: linear-gradient(145deg, #E8F5E9, #C8E6C9);
+            padding: 20px;
+            border-radius: 20px;
+            border: 3px dashed var(--color-success);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .factor-header {
+            text-align: center;
+            font-weight: bold;
+            color: var(--color-success);
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            background-color: white;
+            padding: 10px;
+            border-radius: 15px;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .factor-row {
+            white-space: nowrap;
+            margin: 8px 0;
+            color: var(--color-error);
+            display: flex;
+            align-items: center;
+        }
+        
+        .factor-number {
+            display: inline-block;
+            width: 70px;
+            text-align: right;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .factor-divider {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--color-secondary);
+            margin: 0 10px;
+        }
+        
+        .factor-result {
+            display: inline-block;
+            width: 70px;
+            text-align: left;
+            color: var(--color-primary);
+            font-weight: bold;
+        }
+        
+        .prime-factors {
+            background-color: #FFF3E0;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 15px;
+            font-weight: bold;
+            color: var(--color-warning);
+            text-align: center;
+            font-size: 1.2rem;
+            border: 2px solid #FFCC80;
+        }
+        
+        /* Gắp thả */
+        .drag-section {
+            margin-top: 35px;
+            padding-top: 25px;
+            border-top: 5px solid var(--color-secondary);
+        }
+        
+        .drag-container {
+            display: flex;
+            gap: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .factors-pool {
+            background: linear-gradient(145deg, #E3F2FD, #BBDEFB);
+            padding: 20px;
+            border-radius: 20px;
+            min-height: 100px;
+            flex: 1;
+            min-width: 250px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 3px solid #64B5F6;
+        }
+        
+        .factors-pool h4, .drop-zone h4 {
+            color: #1565C0;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        
+        .factor-tag {
+            display: inline-block;
+            background: linear-gradient(145deg, #FFE66D, #FFF176);
+            color: #333;
+            padding: 10px 18px;
+            margin: 8px;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: grab;
+            border: 2px solid #FFD600;
+            user-select: none;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+        }
+        
+        .factor-tag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+        }
+        
+        .drop-zone {
+            background: linear-gradient(145deg, #F3E5F5, #E1BEE7);
+            min-height: 120px;
+            padding: 20px;
+            border-radius: 20px;
+            flex: 1;
+            min-width: 250px;
+            border: 3px dashed #8E24AA;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .drop-zone h4 {
+            color: #8E24AA;
+            margin: 0 0 15px 0;
+            font-size: 1.3rem;
+        }
+        
+        .drop-zone-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+        }
+        
+        .dropped-numbers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 10px;
+            min-height: 40px;
+        }
+        
+        .dropped-number {
+            background: linear-gradient(145deg, #FFE66D, #FFF176);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+            animation: popIn 0.3s ease-out;
+            border: 2px solid #FFD600;
+        }
+        
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .expression-text {
+            font-size: 1.3rem;
+            color: #D32F2F;
+            font-weight: bold;
+            min-height: 30px;
+            padding: 10px 15px;
+            background-color: #FFECB3;
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        }
+        
+        .action-buttons {
+            margin: 25px 0;
+        }
+        
+        .feedback {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .correct {
+            background: linear-gradient(145deg, #C8E6C9, #A5D6A7);
+            color: #1B5E20;
+            border: 3px solid #4CAF50;
+        }
+        
+        .incorrect {
+            background: linear-gradient(145deg, #FFCDD2, #EF9A9A);
+            color: #C62828;
+            border: 3px solid #F44336;
+        }
+        
+        .guide-text {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #E1F5FE;
+            border-radius: 15px;
+            border-left: 6px solid #03A9F4;
+            text-align: left;
+            font-size: 1rem;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .footer {
+            margin-top: 35px;
+            font-size: 1rem;
+            color: #757575;
+            padding: 15px;
+            background-color: #FFFDE7;
+            border-radius: 15px;
+            border: 2px dashed #FFEB3B;
+        }
+        
+        @media (max-width: 768px) {
+            .factor-container {
+                flex-direction: column;
+            }
+            
+            .drag-container {
+                flex-direction: column;
+            }
+            
+            input[type="number"] {
+                width: 120px;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="header">
+            <span class="emoji">🧮</span>
+            <h1>Học Cùng Trí Vương</h1>
+            <span class="emoji">🎯</span>
+        </div>
+        <p class="subtitle">Học toán thật vui!</p>
+        
+        <div class="instruction">
+            <p>Hãy nhập hai số để tìm <strong>ƯSCLN</strong> và <strong>BSCNN</strong> bằng cách gắp các thừa số nguyên tố!</p>
+        </div>
+        
+        <div class="input-group">
+            <div class="number-input">
+                <label for="number1">Số thứ nhất</label>
+                <input type="number" id="number1" placeholder="Số thứ nhất" min="1">
+            </div>
+            <div class="number-input">
+                <label for="number2">Số thứ hai</label>
+                <input type="number" id="number2" placeholder="Số thứ hai" min="1">
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button onclick="playClickSound(); generateRandomNumbers()" class="btn-random">🎲 Tạo số ngẫu nhiên (10-100)</button>
+            <button onclick="playClickSound(); startGame()" class="btn-primary">🧩 Phân tích ra thừa số nguyên tố</button>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div class="footer">
+            <p>© 2025 Học Cùng Trí Vương | Vui học mỗi ngày 🌟</p>
+        </div>
+    </div>
+
+    <script>
+        // Khởi tạo Web Audio API
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new AudioContext();
+            }
+            return audioCtx;
+        }
+
+        // Âm thanh nút bấm (tích)
+        function playClickSound() {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(800, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.15);
+        }
+
+        // Âm thanh kéo
+        function playDragSound() {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(400, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(600, ctx.currentTime + 0.2);
+            gain.gain.setValueAtTime(0.2, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.2);
+        }
+
+        // Âm thanh thả
+        function playDropSound() {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(500, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.3);
+            gain.gain.setValueAtTime(0.4, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.3);
+        }
+
+        // ✅ Âm thanh khi làm đúng: vỗ tay + nhạc mừng
+        function playSuccessSound() {
+            const ctx = getAudioContext();
+            
+            // Nhạc mừng (3 nốt cao dần)
+            const notes = [659, 784, 988]; // E5, G5, B5
+            notes.forEach((freq, i) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.2);
+                gain.gain.setValueAtTime(0.5, ctx.currentTime + i * 0.2);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i * 0.2 + 0.15);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start(ctx.currentTime + i * 0.2);
+                osc.stop(ctx.currentTime + i * 0.2 + 0.15);
+            });
+
+            // Hiệu ứng vỗ tay (tăng gain nhanh)
+            setTimeout(() => {
+                const clapOsc = ctx.createOscillator();
+                const clapGain = ctx.createGain();
+                clapOsc.type = 'triangle';
+                clapOsc.frequency.setValueAtTime(1000, ctx.currentTime);
+                clapGain.gain.setValueAtTime(0.4, ctx.currentTime);
+                clapGain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.2);
+                clapOsc.connect(clapGain);
+                clapGain.connect(ctx.destination);
+                clapOsc.start(ctx.currentTime);
+                clapOsc.stop(ctx.currentTime + 0.2);
+            }, 600);
+        }
+
+        // ❌ Âm thanh khi làm sai: chói tai ngắn (giống lỗi game)
+        function playErrorSound() {
+            const ctx = getAudioContext();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(400, ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.5);
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start(ctx.currentTime);
+            osc.stop(ctx.currentTime + 0.5);
+        }
+
+        // --- PHẦN LOGIC GAME GIỮ NGUYÊN ---
+        let correctGCD = [];
+        let correctLCM = [];
+        let actualFactors1 = {};
+        let actualFactors2 = {};
+        
+        function generateRandomNumbers() {
+            const num1 = Math.floor(Math.random() * 91) + 10;
+            const num2 = Math.floor(Math.random() * 91) + 10;
+            document.getElementById('number1').value = num1;
+            document.getElementById('number2').value = num2;
+            showMessage("🎯 Đã tạo: <strong>" + num1 + "</strong> và <strong>" + num2 + "</strong>! Nhấn 'Phân tích ra thừa số nguyên tố' để chơi!", "green");
+        }
+        
+        function factorize(n) {
+            let steps = [];
+            let primes = {};
+            let divisor = 2;
+            while (n > 1) {
+                if (n % divisor === 0) {
+                    steps.push({ num: n, divisor: divisor, result: n / divisor });
+                    n = n / divisor;
+                    primes[divisor] = (primes[divisor] || 0) + 1;
+                } else {
+                    divisor++;
+                }
+            }
+            if (steps.length > 0 && steps[steps.length - 1].result !== 1) {
+                steps.push({ num: 1, divisor: "", result: "" });
+            }
+            if (Object.keys(primes).length === 0 && n === 1) {
+                primes[n] = 1;
+            }
+            return { steps, primes };
+        }
+        
+        function formatPrimeFactors(primesObj) {
+            return Object.entries(primesObj)
+                .map(([p, exp]) => exp === 1 ? p : `${p}<sup>${exp}</sup>`)
+                .join(" × ");
+        }
+        
+        function createDragTags(primes) {
+            let tags = [];
+            for (let p in primes) {
+                const exp = primes[p];
+                for (let i = 0; i < exp; i++) {
+                    tags.push({ value: parseInt(p), display: p });
+                }
+            }
+            return tags;
+        }
+        
+        function calculateGCD(a, b) {
+            while (b) {
+                let temp = b;
+                b = a % b;
+                a = temp;
+            }
+            return a;
+        }
+        
+        function calculateLCM(a, b) {
+            return (a * b) / calculateGCD(a, b);
+        }
+        
+        function calculateCorrectAnswers(num1, num2) {
+            actualFactors1 = factorize(num1).primes;
+            actualFactors2 = factorize(num2).primes;
+            
+            const gcdValue = calculateGCD(num1, num2);
+            correctGCD = [];
+            for (let p in actualFactors1) {
+                if (actualFactors2[p]) {
+                    const exp = Math.min(actualFactors1[p], actualFactors2[p]);
+                    for (let i = 0; i < exp; i++) {
+                        correctGCD.push(parseInt(p));
+                    }
+                }
+            }
+            if (gcdValue === 1) correctGCD = [1];
+            else correctGCD.sort((a, b) => a - b);
+            
+            correctLCM = [];
+            const lcmValue = calculateLCM(num1, num2);
+            const lcmFactors = factorize(lcmValue).primes;
+            for (let p in lcmFactors) {
+                const exp = lcmFactors[p];
+                for (let i = 0; i < exp; i++) {
+                    correctLCM.push(parseInt(p));
+                }
+            }
+            correctLCM.sort((a, b) => a - b);
+        }
+        
+        function formatExpression(arr) {
+            if (arr.length === 0) return "1";
+            const counts = {};
+            for (let num of arr) counts[num] = (counts[num] || 0) + 1;
+            return Object.entries(counts)
+                .map(([num, count]) => count === 1 ? num : `${num}<sup>${count}</sup>`)
+                .join(" × ");
+        }
+        
+        function startGame() {
+            const num1 = parseInt(document.getElementById('number1').value);
+            const num2 = parseInt(document.getElementById('number2').value);
+            if (isNaN(num1) || isNaN(num2) || num1 <= 0 || num2 <= 0) {
+                showMessage("Vui lòng nhập hai số nguyên dương nhé!", "red");
+                return;
+            }
+            
+            const factor1 = factorize(num1);
+            const factor2 = factorize(num2);
+            calculateCorrectAnswers(num1, num2);
+            
+            const tags1 = createDragTags(actualFactors1);
+            const tags2 = createDragTags(actualFactors2);
+            let allTags = [...tags1, ...tags2];
+            if (correctGCD.includes(1)) allTags.push({ value: 1, display: "1" });
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `
+                <h3>🎯 Hãy gắp các thừa số để tìm ƯSCLN và BSCNN!</h3>
+                <h4>🔍 Phân tích từng số:</h4>
+                <div class="factor-container">
+                    <div class="factor-column">
+                        <div class="factor-header">${num1}</div>
+                        ${factor1.steps.map(s => `
+                            <div class="factor-row">
+                                <span class="factor-number">${s.num}</span>
+                                <span class="factor-divider">${s.divisor ? '|' : ''}</span>
+                                <span class="factor-result">${s.divisor || ''}</span>
+                            </div>
+                        `).join('')}
+                        <div class="prime-factors">⇒ ${num1} = ${formatPrimeFactors(actualFactors1)}</div>
+                    </div>
+                    <div class="factor-column">
+                        <div class="factor-header">${num2}</div>
+                        ${factor2.steps.map(s => `
+                            <div class="factor-row">
+                                <span class="factor-number">${s.num}</span>
+                                <span class="factor-divider">${s.divisor ? '|' : ''}</span>
+                                <span class="factor-result">${s.divisor || ''}</span>
+                            </div>
+                        `).join('')}
+                        <div class="prime-factors">⇒ ${num2} = ${formatPrimeFactors(actualFactors2)}</div>
+                    </div>
+                </div>
+                <div class="drag-section">
+                    <h4>🧩 Kéo các thừa số vào ô:</h4>
+                    <div class="drag-container">
+                        <div class="factors-pool" id="factors-pool">
+                            <h4>Thừa số để gắp</h4>
+                            ${allTags.map(t => 
+                                `<span class="factor-tag" draggable="true" data-value="${t.value}" ondragstart="playDragSound();">${t.display}</span>`
+                            ).join('')}
+                        </div>
+                        <div>
+                            <div class="drop-zone" id="gcd-zone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <h4>ƯSCLN = ?</h4>
+                                <div class="drop-zone-content">
+                                    <div id="gcd-numbers" class="dropped-numbers"></div>
+                                    <div id="gcd-expression" class="expression-text">?</div>
+                                </div>
+                            </div>
+                            <div class="drop-zone" id="lcm-zone" ondrop="drop(event)" ondragover="allowDrop(event)">
+                                <h4>BSCNN = ?</h4>
+                                <div class="drop-zone-content">
+                                    <div id="lcm-numbers" class="dropped-numbers"></div>
+                                    <div id="lcm-expression" class="expression-text">?</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button onclick="checkAnswer(${num1},${num2})" class="btn-primary">✅ Kiểm tra</button>
+                        <button onclick="resetDrag()" class="btn-danger">🔄 Làm lại</button>
+                    </div>
+                    <div id="feedback"></div>
+                </div>
+            `;
+            resultDiv.style.display = "block";
+            
+            setTimeout(() => {
+                document.querySelectorAll('.factor-tag').forEach(tag => {
+                    tag.addEventListener('dragstart', drag);
+                });
+            }, 100);
+        }
+        
+        function allowDrop(ev) { ev.preventDefault(); }
+        function drag(ev) { ev.dataTransfer.setData("text", ev.target.dataset.value); playDragSound(); }
+        
+        function drop(ev) {
+            ev.preventDefault();
+            const value = ev.dataTransfer.getData("text");
+            let containerId;
+            if (ev.target.id === 'gcd-zone' || ev.target.closest('#gcd-zone')) containerId = 'gcd';
+            else if (ev.target.id === 'lcm-zone' || ev.target.closest('#lcm-zone')) containerId = 'lcm';
+            else return;
+            
+            const numbersContainer = document.getElementById(`${containerId}-numbers`);
+            const expressionContainer = document.getElementById(`${containerId}-expression`);
+            
+            const numberEl = document.createElement("span");
+            numberEl.className = "dropped-number";
+            numberEl.textContent = value;
+            numberEl.onclick = function() { this.remove(); updateExpression(containerId); };
+            numbersContainer.appendChild(numberEl);
+            
+            updateExpression(containerId);
+            playDropSound();
+        }
+        
+        function updateExpression(containerId) {
+            const numbersContainer = document.getElementById(`${containerId}-numbers`);
+            const expressionContainer = document.getElementById(`${containerId}-expression`);
+            const numbers = Array.from(numbersContainer.querySelectorAll('.dropped-number'))
+                .map(el => parseInt(el.textContent));
+            if (numbers.length === 0) {
+                expressionContainer.innerHTML = "?";
+            } else {
+                const counts = {};
+                for (let num of numbers) counts[num] = (counts[num] || 0) + 1;
+                const expression = Object.entries(counts)
+                    .map(([num, count]) => count === 1 ? num : `${num}<sup>${count}</sup>`)
+                    .join(" × ");
+                expressionContainer.innerHTML = expression;
+            }
+        }
+        
+        function resetDrag() {
+            document.getElementById('gcd-numbers').innerHTML = '';
+            document.getElementById('lcm-numbers').innerHTML = '';
+            document.getElementById('gcd-expression').innerHTML = '?';
+            document.getElementById('lcm-expression').innerHTML = '?';
+            document.getElementById('feedback').innerHTML = '';
+        }
+        
+        function checkAnswer(num1, num2) {
+            const gcdInput = Array.from(document.querySelectorAll('#gcd-numbers .dropped-number'))
+                .map(el => parseInt(el.textContent)).sort((a, b) => a - b);
+            const lcmInput = Array.from(document.querySelectorAll('#lcm-numbers .dropped-number'))
+                .map(el => parseInt(el.textContent)).sort((a, b) => a - b);
+            
+            const feedback = document.getElementById('feedback');
+            const gcdExpr = formatExpression(correctGCD);
+            const lcmExpr = formatExpression(correctLCM);
+            
+            if (arraysEqual(gcdInput, correctGCD) && arraysEqual(lcmInput, correctLCM)) {
+                feedback.innerHTML = `
+                    <div class="feedback correct">
+                        🎉 CHÚC MỪNG BẠN! Bạn đã làm đúng rồi! 🎉<br><br>
+                        <strong>ƯSCLN</strong> = ${gcdExpr}<br>
+                        <strong>BSCNN</strong> = ${lcmExpr}
+                    </div>
+                `;
+                playSuccessSound();
+            } else {
+                feedback.innerHTML = `
+                    <div class="feedback incorrect">
+                        🤔 Chưa đúng rồi! Nhưng đừng nản nhé! 😊<br><br>
+                        <strong>Đáp án đúng:</strong><br>
+                        • <strong>ƯSCLN</strong> = ${gcdExpr}<br>
+                        • <strong>BSCNN</strong> = ${lcmExpr}<br><br>
+                        <strong>Nguyên lý:</strong><br>
+                        ƯSCLN: thừa số chung, mũ nhỏ nhất.<br>
+                        BSCNN: tất cả, mũ lớn nhất.
+                    </div>
+                `;
+                playErrorSound();
+            }
+        }
+        
+        function arraysEqual(a, b) {
+            if (a.length !== b.length) return false;
+            for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+            return true;
+        }
+        
+        function showMessage(text, color = "red") {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<p style="color: ${color === 'red' ? '#c62828' : 'green'}; font-weight: bold;">${text}</p>`;
+            resultDiv.style.display = "block";
+        }
+        
+        function resetAll() {
+            document.getElementById('number1').value = '';
+            document.getElementById('number2').value = '';
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('result').innerHTML = '';
+        }
+    </script>
+</body>
+</html>
