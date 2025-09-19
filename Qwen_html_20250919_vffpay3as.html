@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám Phá Vi Phân & Đạo Hàm - Tiến sĩ Mai Thế Duy</title>
+
+    <!-- MathJax Config -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true,
+                processEnvironments: true
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady();
+                }
+            }
+        };
+    </script>
+
+    <!-- MathJax Core -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --text: #212529;
+            --primary: #343a40;
+            --accent: #6c757d;
+            --light: #e9ecef;
+            --success: #28a745;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #121212;
+            --text: #e0e0e0;
+            --primary: #bbdefb;
+            --accent: #b0bec5;
+            --light: #1e1e1e;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 0;
+            transition: background-color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .author {
+            text-align: center;
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+        }
+
+        .date {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            margin-bottom: 60px;
+            padding: 30px;
+            background-color: var(--light);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .math {
+            display: block;
+            text-align: center;
+            margin: 25px 0;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.4rem;
+            line-height: 1.8;
+        }
+
+        .illustration-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .illustration {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .illustration:hover {
+            transform: scale(1.03);
+        }
+
+        .explanation {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: rgba(255,255,255,0.6);
+            border-left: 4px solid var(--success);
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .btn.active {
+            background-color: var(--success);
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.3);
+        }
+
+        /* SVG Styles */
+        .line { stroke: #343a40; stroke-width: 3; fill: none; }
+        .point { fill: #343a40; }
+        .segment { stroke: #e91e63; stroke-width: 4; fill: none; }
+        .dsegment { stroke: #ff9800; stroke-width: 2; fill: none; }
+        .label { font-size: 14px; fill: #333; font-weight: bold; }
+        .highlight { fill: #ffeb3b; opacity: 0.7; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .section-title { font-size: 1.5rem; }
+            .math { font-size: 1.2rem; }
+            .illustration-container { flex-direction: column; align-items: center; gap: 30px; }
+            .illustration { max-width: 100%; }
+            .btn { padding: 8px 16px; font-size: 0.9rem; }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--light);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* Scroll Animation */
+        .section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        /* Ensure MathJax renders properly in dark mode */
+        .mjx-container {
+            color: var(--text) !important;
+        }
+
+        [data-theme="dark"] .mjx-container {
+            color: var(--text) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+
+        <h1>KHÁM PHÁ KHÁI NIỆM VI PHÂN VÀ ĐẠO HÀM</h1>
+        <p class="author">Tiến sĩ Mai Thế Duy</p>
+        <p class="date">Ngày cập nhật: <span id="currentDate"></span></p>
+
+        <!-- Section 1 -->
+        <section class="section" id="section1">
+            <h2 class="section-title">Lời mở đầu</h2>
+            <p>Trong thế giới của toán học, có những khái niệm thoạt nghe có vẻ trừu tượng nhưng lại ẩn chứa những ý nghĩa vô cùng sâu sắc và có ứng dụng rộng rãi trong thực tiễn. Vi phân và đạo hàm là hai trong số những khái niệm như vậy. Bài viết này sẽ giúp các em học sinh có một cái nhìn trực quan và dễ hiểu hơn về bản chất của vi phân và đạo hàm, từ đó xây dựng nền tảng vững chắc để khám phá những lĩnh vực sâu hơn của giải tích.</p>
+        </section>
+
+        <!-- Section 2 -->
+        <section class="section" id="section2">
+            <h2 class="section-title">Vi phân - Sự khác biệt "vô cùng bé"</h2>
+            <p>Chúng ta hãy bắt đầu với khái niệm "vi phân". Chữ "vi" trong tiếng Hán có nghĩa là "bé", còn "phân" là sự phân biệt, sự khác biệt. Như vậy, "vi phân" có thể hiểu nôm na là một sự khác biệt rất bé. Trong toán học, vi phân thường được ký hiệu bằng chữ "d". Vi phân của một đại lượng \( S \) nào đó sẽ được ký hiệu là \( dS \).</p>
+
+            <div class="illustration-container">
+                <svg class="illustration" width="500" height="120" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Đoạn thẳng S -->
+                    <line class="line" x1="50" y1="60" x2="450" y2="60" />
+                    <!-- Điểm A và B -->
+                    <circle class="point" cx="50" cy="60" r="4" />
+                    <circle class="point" cx="450" cy="60" r="4" />
+                    <!-- Nhãn A và B -->
+                    <text class="label" x="40" y="55">A</text>
+                    <text class="label" x="455" y="55">B</text>
+                    <text class="label" x="250" y="90" text-anchor="middle">S</text>
+
+                    <!-- Vi phân dS (đoạn nhỏ) -->
+                    <line class="dsegment" x1="280" y1="60" x2="320" y2="60" />
+                    <text class="label" x="300" y="35" text-anchor="middle">dS</text>
+
+                    <!-- Hiệu ứng hover: chia nhỏ -->
+                    <g class="hover-group" style="opacity: 0;">
+                        <line class="dsegment" x1="220" y1="60" x2="240" y2="60" />
+                        <line class="dsegment" x1="240" y1="60" x2="260" y2="60" />
+                        <line class="dsegment" x1="260" y1="60" x2="280" y2="60" />
+                        <line class="dsegment" x1="320" y1="60" x2="340" y2="60" />
+                        <line class="dsegment" x1="340" y1="60" x2="360" y2="60" />
+                        <line class="dsegment" x1="360" y1="60" x2="380" y2="60" />
+                        <text class="label" x="300" y="100" text-anchor="middle">Chia nhỏ đến vô tận → dS</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="explanation">
+                <strong>Lưu ý:</strong> Dù "vô cùng bé", \( dS \) vẫn là một sự khác biệt — hai đầu mút của nó không trùng nhau. Đó chính là cốt lõi của vi phân: <em>sự biến thiên vô cùng nhỏ nhưng hữu hạn</em>.
+            </div>
+        </section>
+
+        <!-- Section 3 -->
+        <section class="section" id="section3">
+            <h2 class="section-title">Đạo hàm - Tỷ số của những cái "vô cùng bé"</h2>
+            <p>Bây giờ, giả sử chúng ta có hai đoạn thẳng \( S \) (từ A đến B) và \( T \) (từ C đến D).</p>
+
+            <div class="illustration-container">
+                <svg class="illustration" width="500" height="160" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Đoạn S -->
+                    <line class="line" x1="50" y1="60" x2="450" y2="60" />
+                    <circle class="point" cx="50" cy="60" r="4" />
+                    <circle class="point" cx="450" cy="60" r="4" />
+                    <text class="label" x="40" y="55">A</text>
+                    <text class="label" x="455" y="55">B</text>
+                    <text class="label" x="250" y="90" text-anchor="middle">S</text>
+
+                    <!-- Đoạn T -->
+                    <line class="line" x1="50" y1="120" x2="250" y2="120" />
+                    <circle class="point" cx="50" cy="120" r="4" />
+                    <circle class="point" cx="250" cy="120" r="4" />
+                    <text class="label" x="40" y="115">C</text>
+                    <text class="label" x="255" y="115">D</text>
+                    <text class="label" x="150" y="150" text-anchor="middle">T</text>
+
+                    <!-- Vi phân dS -->
+                    <line class="dsegment" x1="280" y1="60" x2="320" y2="60" />
+                    <text class="label" x="300" y="35" text-anchor="middle">dS</text>
+
+                    <!-- Vi phân dT -->
+                    <line class="dsegment" x1="140" y1="120" x2="160" y2="120" />
+                    <text class="label" x="150" y="100" text-anchor="middle">dT</text>
+
+                    <!-- Hiệu ứng hover: so sánh tỷ lệ -->
+                    <g class="hover-group" style="opacity: 0;">
+                        <line class="dsegment" x1="220" y1="60" x2="240" y2="60" />
+                        <line class="dsegment" x1="240" y1="60" x2="260" y2="60" />
+                        <line class="dsegment" x1="260" y1="60" x2="280" y2="60" />
+                        <line class="dsegment" x1="320" y1="60" x2="340" y2="60" />
+                        <line class="dsegment" x1="340" y1="60" x2="360" y2="60" />
+                        <line class="dsegment" x1="360" y1="60" x2="380" y2="60" />
+
+                        <line class="dsegment" x1="100" y1="120" x2="110" y2="120" />
+                        <line class="dsegment" x1="110" y1="120" x2="120" y2="120" />
+                        <line class="dsegment" x1="120" y1="120" x2="130" y2="120" />
+                        <line class="dsegment" x1="130" y1="120" x2="140" y2="120" />
+                        <line class="dsegment" x1="160" y1="120" x2="170" y2="120" />
+                        <line class="dsegment" x1="170" y1="120" x2="180" y2="120" />
+                        <line class="dsegment" x1="180" y1="120" x2="190" y2="120" />
+                        <line class="dsegment" x1="190" y1="120" x2="200" y2="120" />
+
+                        <text class="label" x="250" y="150" text-anchor="middle">Nếu \( S = 2T \) → thì \( dS = 2 \cdot dT \)</text>
+                    </g>
+                </svg>
+            </div>
+
+            <div class="explanation">
+                <strong>Ý nghĩa:</strong> Ta không thể lấy \( dS - dT \), vì cả hai đều “vô cùng bé”. Nhưng ta có thể lấy tỷ số: \( \frac{dS}{dT} \). Nếu \( S = 2T \), thì \( \frac{dS}{dT} = 2 \). Chính tỷ số này chính là <strong>đạo hàm</strong>.
+            </div>
+        </section>
+
+        <!-- Section 4 -->
+        <section class="section" id="section4">
+            <h2 class="section-title">Định nghĩa và Ký hiệu</h2>
+            <p>Từ những phân tích trên, chúng ta có thể đi đến một định nghĩa trực quan:</p>
+
+            <blockquote style="background: var(--light); padding: 20px; border-left: 4px solid var(--success); margin: 30px 0; font-style: italic; border-radius: 8px;">
+                <strong>Đạo hàm</strong> của một đại lượng biến thiên này theo một đại lượng biến thiên khác là tỷ số của các vi phân (những sự thay đổi vô cùng bé) của chúng.
+            </blockquote>
+
+            <p>Nếu ta coi \( S \) là một hàm số của \( t \), ký hiệu \( S(t) \), thì đạo hàm của \( S \) theo \( t \) được ký hiệu là \( S'_t \) hoặc \( \frac{dS}{dt} \):</p>
+
+            <div class="math">
+                $$ S'_t = \frac{dS}{dt} $$
+            </div>
+
+            <p>Ký hiệu \( \frac{dS}{dt} \) không phải là một phân số thông thường — nó là một <strong>ký hiệu vi phân</strong>, đại diện cho tốc độ thay đổi tức thời của \( S \) theo \( t \).</p>
+        </section>
+
+        <!-- Section 5 -->
+        <section class="section" id="section5">
+            <h2 class="section-title">Kết luận</h2>
+            <p>Thông qua bài viết này, hy vọng các em đã có một cái nhìn mới mẻ và sâu sắc hơn về vi phân và đạo hàm. Vi phân không chỉ là một ký hiệu toán học khô khan, mà nó đại diện cho một "sự khác biệt vô cùng bé". Và đạo hàm, về bản chất, chính là tỷ số so sánh những sự khác biệt vô cùng bé đó.</p>
+
+            <p>Hiểu được cốt lõi này sẽ giúp các em không chỉ giải quyết tốt các bài toán trong sách vở mà còn có thể áp dụng tư duy giải tích vào việc phân tích các vấn đề trong thực tế cuộc sống, từ vật lý, kinh tế cho đến nhiều lĩnh vực khoa học khác. Chúc các em luôn giữ được niềm say mê với toán học và không ngừng khám phá những vẻ đẹp ẩn sau những con số và công thức.</p>
+        </section>
+
+        <div class="nav-buttons">
+            <button class="btn active" data-section="1">Lời mở đầu</button>
+            <button class="btn" data-section="2">Vi phân</button>
+            <button class="btn" data-section="3">Đạo hàm</button>
+            <button class="btn" data-section="4">Định nghĩa</button>
+            <button class="btn" data-section="5">Kết luận</button>
+        </div>
+
+        <footer>
+            © 2025 Tiến sĩ Mai Thế Duy — Tài liệu giáo dục miễn phí cho học sinh yêu toán
+        </footer>
+
+    </div>
+
+    <script>
+        // Cập nhật ngày hôm nay
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('vi-VN');
+
+        // Chuyển chế độ tối/sáng
+        const themeToggle = document.getElementById('themeToggle');
+        const isDark = localStorage.getItem('theme') === 'dark';
+        if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.hasAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', isDark ? '' : 'dark');
+        });
+
+        // Điều hướng giữa các section
+        const buttons = document.querySelectorAll('.btn');
+        const sections = document.querySelectorAll('.section');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const sectionId = btn.getAttribute('data-section');
+                sections.forEach(sec => sec.classList.remove('visible'));
+                document.getElementById(`section${sectionId}`).classList.add('visible');
+            });
+        });
+
+        // Hiệu ứng hover trên SVG: hiện phần chia nhỏ
+        const svgs = document.querySelectorAll('.illustration');
+        svgs.forEach(svg => {
+            const hoverGroup = svg.querySelector('.hover-group');
+            svg.addEventListener('mouseenter', () => {
+                hoverGroup.style.opacity = '1';
+            });
+            svg.addEventListener('mouseleave', () => {
+                hoverGroup.style.opacity = '0';
+            });
+        });
+
+        // Hiệu ứng scroll: xuất hiện dần
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+
+        // Thêm icon Font Awesome nếu chưa có
+        if (!document.getElementById('fontawesome')) {
+            const fa = document.createElement('link');
+            fa.id = 'fontawesome';
+            fa.rel = 'stylesheet';
+            fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
+            document.head.appendChild(fa);
+        }
+
+        // Đảm bảo MathJax đã render xong sau khi DOM tải xong
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise().catch(err => console.error('MathJax render error:', err));
+            }
+        });
+
+        // Re-render MathJax khi chuyển theme (để công thức phù hợp màu)
+        const observerTheme = new MutationObserver(() => {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise().catch(err => console.error('MathJax re-render error:', err));
+            }
+        });
+
+        observerTheme.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+    </script>
+
+</body>
+</html>
