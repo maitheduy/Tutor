@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hành Trình Khám Phá Vi Phân & Đạo Hàm - Tiến sĩ Mai Thế Duy</title>
+
+    <!-- MathJax Config -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']],
+                processEscapes: true,
+                processEnvironments: true,
+                processRefs: true,
+                tags: 'ams',
+                tagSide: 'right'
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        document.addEventListener('themeChange', () => {
+                            MathJax.typesetPromise().catch(err => console.error('Re-render failed:', err));
+                        });
+                    });
+                }
+            }
+        };
+    </script>
+
+    <!-- MathJax Core -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --bg: #f8f9fa;
+            --text: #212529;
+            --primary: #343a40;
+            --accent: #6c757d;
+            --light: #e9ecef;
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg: #121212;
+            --text: #e0e0e0;
+            --primary: #bbdefb;
+            --accent: #b0bec5;
+            --light: #1e1e1e;
+            --shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.7;
+            padding: 0;
+            transition: background-color 0.4s ease;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.4rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .author {
+            text-align: center;
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 30px;
+            font-size: 1.4rem;
+        }
+
+        .date {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+
+        .journey-section {
+            margin-bottom: 80px;
+            padding: 40px;
+            background-color: var(--light);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            border-left: 4px solid var(--primary);
+        }
+
+        .journey-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+            position: relative;
+        }
+
+        .journey-title::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--warning);
+            border-radius: 3px;
+        }
+
+        .journey-step {
+            margin-bottom: 40px;
+            padding: 25px;
+            background-color: rgba(255,255,255,0.8);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent);
+            transition: transform 0.3s ease;
+        }
+
+        .journey-step:hover {
+            transform: translateX(5px);
+        }
+
+        .step-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: var(--warning);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .math {
+            display: block;
+            text-align: center;
+            margin: 30px 0;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.4rem;
+            line-height: 1.8;
+            font-family: 'Cambria Math', 'Latin Modern Math', serif;
+        }
+
+        .illustration-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .illustration {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            margin: 0 auto;
+            background: transparent;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .illustration:hover {
+            transform: scale(1.02);
+        }
+
+        .explanation {
+            margin-top: 25px;
+            padding: 20px;
+            background-color: rgba(255,255,255,0.6);
+            border-left: 4px solid var(--success);
+            border-radius: 8px;
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .highlight {
+            background-color: rgba(255, 255, 100, 0.3);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: 600;
+        }
+
+        /* Định nghĩa chuẩn cho in nghiêng và in đậm */
+        em {
+            font-style: italic;
+            font-weight: normal;
+            color: var(--text);
+        }
+
+        strong {
+            font-weight: 700;
+            font-style: normal;
+            color: var(--text);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 60px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn.active {
+            background-color: var(--warning);
+            box-shadow: 0 0 0 3px rgba(255, 193, 7, 0.3);
+            color: var(--primary);
+        }
+
+        /* SVG Styles */
+        .line { stroke: #343a40; stroke-width: 3; fill: none; }
+        .point { fill: #343a40; }
+        .delta-segment { stroke: #e91e63; stroke-width: 4; fill: none; }
+        .dsegment { stroke: #ff9800; stroke-width: 2; fill: none; }
+        .label { font-size: 14px; fill: #333; font-weight: bold; }
+        .highlight-arc { fill: #ffeb3b; opacity: 0.7; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .journey-title { font-size: 1.7rem; }
+            .math { font-size: 1.2rem; }
+            .illustration-container { flex-direction: column; align-items: center; gap: 30px; }
+            .illustration { max-width: 100%; }
+            .btn { padding: 10px 20px; font-size: 1rem; min-width: 150px; }
+            .step-number { width: 25px; height: 25px; font-size: 1rem; }
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--light);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        /* Scroll Animation */
+        .journey-section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .journey-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--accent);
+            font-size: 0.9rem;
+            padding: 20px;
+        }
+
+        /* MathJax dark mode compatibility */
+        .mjx-container {
+            color: var(--text) !important;
+            font-family: 'Cambria Math', 'Latin Modern Math', serif !important;
+        }
+
+        [data-theme="dark"] .mjx-container {
+            color: var(--text) !important;
+        }
+
+        /* Prevent MathJax flicker during load */
+        .mjx-chtml {
+            opacity: 1 !important;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+
+        <h1>HÀNH TRÌNH KHÁM PHÁ VI PHÂN & ĐẠO HÀM</h1>
+        <p class="author">Tiến sĩ Mai Thế Duy</p>
+        <p class="date">Ngày cập nhật: <span id="currentDate"></span></p>
+
+        <!-- Hành trình 1: Trực quan sinh động -->
+        <section class="journey-section" id="journey1">
+            <h2 class="journey-title">Hành Trình 1: Tiếp Cận Trực Quan Sinh Động</h2>
+
+            <div class="journey-step">
+                <span class="step-number">1</span>
+                <p>Chúng ta bắt đầu với từ "vi phân". Chữ "vi" trong tiếng Hán có nghĩa là "bé", còn "phân" là sự phân biệt, sự khác biệt. Như vậy, "vi phân" có thể hiểu nôm na là một <em>sự khác biệt rất bé</em>. Trong toán học, vi phân thường được ký hiệu bằng chữ "d", xuất phát từ chữ "differential" trong tiếng Anh. Vi phân của một đại lượng \( S \) nào đó sẽ được ký hiệu là \( dS \).</p>
+
+                <div class="illustration-container">
+                    <svg class="illustration" width="500" height="120" viewBox="0 0 500 120" xmlns="http://www.w3.org/2000/svg">
+                        <line class="line" x1="50" y1="60" x2="450" y2="60" />
+                        <circle class="point" cx="50" cy="60" r="4" />
+                        <circle class="point" cx="450" cy="60" r="4" />
+                        <text class="label" x="40" y="55">A</text>
+                        <text class="label" x="455" y="55">B</text>
+                        <text class="label" x="250" y="90" text-anchor="middle">S</text>
+                        <line class="dsegment" x1="280" y1="60" x2="320" y2="60" />
+                        <text class="label" x="300" y="35" text-anchor="middle">dS</text>
+                        <g class="hover-group" style="opacity: 0;">
+                            <line class="dsegment" x1="220" y1="60" x2="240" y2="60" />
+                            <line class="dsegment" x1="240" y1="60" x2="260" y2="60" />
+                            <line class="dsegment" x1="260" y1="60" x2="280" y2="60" />
+                            <line class="dsegment" x1="320" y1="60" x2="340" y2="60" />
+                            <line class="dsegment" x1="340" y1="60" x2="360" y2="60" />
+                            <line class="dsegment" x1="360" y1="60" x2="380" y2="60" />
+                            <text class="label" x="300" y="100" text-anchor="middle">Chia nhỏ đến vô tận → dS</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="explanation">
+                    <strong>Lưu ý:</strong> Dù "vô cùng bé", \( dS \) vẫn là một sự khác biệt — hai đầu mút của nó không trùng nhau mà nằm sát cạnh nhau. Đây chính là bản chất trực quan nhất của vi phân.
+                </div>
+            </div>
+
+            <div class="journey-step">
+                <span class="step-number">2</span>
+                <p>Bây giờ, giả sử chúng ta có hai đoạn thẳng \( S \) (từ A đến B) và \( T \) (từ C đến D). Chúng ta cũng chia mỗi đoạn thành các phần vô cùng bé, ta sẽ có các vi phân \( dS \) và \( dT \). Một câu hỏi được đặt ra: làm thế nào để so sánh hai đại lượng vô cùng bé này?</p>
+                <p>Phép trừ trực tiếp giữa chúng là vô nghĩa. Tuy nhiên, chúng ta có thể so sánh chúng thông qua một <em>tỷ lệ</em>.</p>
+
+                <div class="illustration-container">
+                    <svg class="illustration" width="500" height="160" viewBox="0 0 500 160" xmlns="http://www.w3.org/2000/svg">
+                        <line class="line" x1="50" y1="60" x2="450" y2="60" />
+                        <circle class="point" cx="50" cy="60" r="4" />
+                        <circle class="point" cx="450" cy="60" r="4" />
+                        <text class="label" x="40" y="55">A</text>
+                        <text class="label" x="455" y="55">B</text>
+                        <text class="label" x="250" y="90" text-anchor="middle">S</text>
+
+                        <line class="line" x1="50" y1="120" x2="250" y2="120" />
+                        <circle class="point" cx="50" cy="120" r="4" />
+                        <circle class="point" cx="250" cy="120" r="4" />
+                        <text class="label" x="40" y="115">C</text>
+                        <text class="label" x="255" y="115">D</text>
+                        <text class="label" x="150" y="150" text-anchor="middle">T</text>
+
+                        <line class="dsegment" x1="280" y1="60" x2="320" y2="60" />
+                        <text class="label" x="300" y="35" text-anchor="middle">dS</text>
+
+                        <line class="dsegment" x1="140" y1="120" x2="160" y2="120" />
+                        <text class="label" x="150" y="100" text-anchor="middle">dT</text>
+
+                        <g class="hover-group" style="opacity: 0;">
+                            <line class="dsegment" x1="220" y1="60" x2="240" y2="60" />
+                            <line class="dsegment" x1="240" y1="60" x2="260" y2="60" />
+                            <line class="dsegment" x1="260" y1="60" x2="280" y2="60" />
+                            <line class="dsegment" x1="320" y1="60" x2="340" y2="60" />
+                            <line class="dsegment" x1="340" y1="60" x2="360" y2="60" />
+                            <line class="dsegment" x1="360" y1="60" x2="380" y2="60" />
+
+                            <line class="dsegment" x1="100" y1="120" x2="110" y2="120" />
+                            <line class="dsegment" x1="110" y1="120" x2="120" y2="120" />
+                            <line class="dsegment" x1="120" y1="120" x2="130" y2="120" />
+                            <line class="dsegment" x1="130" y1="120" x2="140" y2="120" />
+                            <line class="dsegment" x1="160" y1="120" x2="170" y2="120" />
+                            <line class="dsegment" x1="170" y1="120" x2="180" y2="120" />
+                            <line class="dsegment" x1="180" y1="120" x2="190" y2="120" />
+                            <line class="dsegment" x1="190" y1="120" x2="200" y2="120" />
+
+                            <text class="label" x="250" y="150" text-anchor="middle">Nếu S = 2T thì dS ≈ 2·dT</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="explanation">
+                    <strong>Ý nghĩa:</strong> Nếu \( S = 2T \), thì tỷ số \( \frac{dS}{dT} = 2 \). Chính tỷ số này chính là ý tưởng cốt lõi, là bản chất của <em>đạo hàm</em>.
+                    <div class="math">
+                        $$ \frac{dS}{dT} = 2 $$
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hành trình 2: Từ trực quan đến bản chất toán học -->
+        <section class="journey-section" id="journey2">
+            <h2 class="journey-title">Hành Trình 2: Từ Trực Quan Đến Bản Chất Toán Học</h2>
+
+            <div class="journey-step">
+                <span class="step-number">1</span>
+                <p>Từ cách hiểu trên, ta có thể tiến thêm một bước gần hơn đến bản chất toán học. Khi một đại lượng \( t \) thay đổi một lượng rất nhỏ, thì đại lượng \( S \) phụ thuộc vào nó cũng thay đổi theo. Vi phân \( dS \) chính là <em>phần chính, tuyến tính</em> của sự thay đổi thực sự đó.</p>
+                <p>Nói cách khác, \( dS \) là một xấp xỉ rất tốt cho sự thay đổi của \( S \) trong một lân cận vô cùng bé. Cách tiếp cận này giúp kết nối hình ảnh trực quan về "mẩu nhỏ" với một công cụ toán học hữu ích.</p>
+                <div class="math">
+                    $$ dS \approx \Delta S \quad \text{(khi } \Delta t \text{ rất nhỏ)} $$
+                </div>
+            </div>
+
+            <div class="journey-step">
+                <span class="step-number">2</span>
+                <p>Giả sử hàm số \( S = f(t) \). Khi \( t \) tăng một chút thành \( t + \Delta t \), thì \( S \) cũng tăng thành \( f(t + \Delta t) \). Sự thay đổi thực tế là \( \Delta S = f(t + \Delta t) - f(t) \).</p>
+                <p>Vi phân \( dS \) được định nghĩa như phần tuyến tính của \( \Delta S \), tức là:</p>
+                <div class="math">
+                    $$ dS = f'(t) \cdot dt $$
+                </div>
+                <p>Ở đây, \( f'(t) \) chính là hệ số góc — hay tốc độ thay đổi <em>tức thời</em> — tại điểm \( t \). Đây là cầu nối giữa hình dung trực quan và công cụ toán học.</p>
+            </div>
+        </section>
+
+        <!-- Hành trình 3: Sự chặt chẽ của toán học -->
+        <section class="journey-section" id="journey3">
+            <h2 class="journey-title">Hành Trình 3: Sự Chặt Chẽ của Toán Học — Giới Hạn Là Trọng Tài Tối Cao</h2>
+
+            <div class="journey-step">
+                <span class="step-number">1</span>
+                <p>Cách tiếp cận trực quan ở trên vô cùng mạnh mẽ để xây dựng ý tưởng, nhưng nó có thể dẫn đến những tranh cãi vì thiếu sự chặt chẽ. Để giải quyết triệt để vấn đề này, toán học sử dụng một công cụ tối thượng: <em>giới hạn</em>.</p>
+
+                <p>Hãy xét hàm số \( S = f(t) \). Khi đối số thay đổi một lượng hữu hạn từ \( t \) đến \( t + \Delta t \), ta gọi \( \Delta t \) là <em>số gia của đối số</em>. Khi đó, hàm số cũng sẽ thay đổi một lượng tương ứng là \( \Delta S = f(t + \Delta t) - f(t) \), được gọi là <em>số gia của hàm số</em>.</p>
+
+                <p>Tỷ số \( \frac{\Delta S}{\Delta t} \) cho chúng ta <em>tốc độ thay đổi trung bình</em> của \( S \) trong khoảng \( \Delta t \). Nhưng để có tốc độ thay đổi <em>tức thời</em> tại đúng thời điểm \( t \), chúng ta cần cho khoảng \( \Delta t \) nhỏ đến vô cùng.</p>
+
+                <div class="illustration-container">
+                    <svg class="illustration" width="500" height="200" viewBox="0 0 500 200" xmlns="http://www.w3.org/2000/svg">
+                        <line class="line" x1="50" y1="150" x2="450" y2="150" />
+                        <line class="line" x1="50" y1="50" x2="50" y2="150" />
+
+                        <path class="line" d="M50,140 Q150,80 250,100 T450,130" fill="none" stroke="#343a40" stroke-width="2"/>
+
+                        <circle class="point" cx="200" cy="110" r="5" />
+                        <text class="label" x="190" y="105">t</text>
+
+                        <line class="delta-segment" x1="200" y1="150" x2="260" y2="150" />
+                        <text class="label" x="230" y="165">Δt</text>
+
+                        <line class="delta-segment" x1="260" y1="150" x2="260" y2="100" />
+                        <text class="label" x="270" y="125">ΔS</text>
+
+                        <path class="line" d="M200,110 L260,100" stroke="#e91e63" stroke-width="2" stroke-dasharray="4,2"/>
+                        <text class="label" x="230" y="95" fill="#e91e63">ΔS / Δt</text>
+
+                        <g class="hover-group" style="opacity: 0;">
+                            <circle class="point" cx="240" cy="105" r="5" />
+                            <line class="delta-segment" x1="200" y1="150" x2="240" y2="150" />
+                            <line class="delta-segment" x1="240" y1="150" x2="240" y2="105" />
+                            <path class="line" d="M200,110 L240,105" stroke="#e91e63" stroke-width="2"/>
+                            <text class="label" x="220" y="95" fill="#e91e63">ΔS / Δt → S’(t)</text>
+                            <text class="label" x="250" y="180" text-anchor="middle" fill="#d32f2f">Khi Δt → 0, tỷ số tiến đến đạo hàm</text>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="explanation">
+                    <strong>Kết luận trực quan:</strong> Khi \( \Delta t \) càng nhỏ, tỷ số \( \frac{\Delta S}{\Delta t} \) càng tiến gần đến một giá trị cố định — đó chính là <em>đạo hàm</em>.
+                    <div class="math">
+                        $$ \frac{\Delta S}{\Delta t} \to S'(t) \quad \text{khi } \Delta t \to 0 $$
+                    </div>
+                </div>
+            </div>
+
+            <div class="journey-step">
+                <span class="step-number">2</span>
+                <p>Đây chính là lúc giới hạn đóng vai trò "<em>trọng tài</em>". Đạo hàm được định nghĩa một cách chặt chẽ và không thể tranh cãi là giới hạn của tỷ số các số gia khi số gia của đối số tiến về 0.</p>
+
+                <div class="math">
+                    $$ S'(t) = \lim_{\Delta t \to 0} \frac{\Delta S}{\Delta t} = \lim_{\Delta t \to 0} \frac{f(t + \Delta t) - f(t)}{\Delta t} $$
+                </div>
+
+                <p>(nếu giới hạn này tồn tại và hữu hạn).</p>
+
+                <div class="explanation">
+                    Với định nghĩa này, mọi sự mơ hồ về "vô cùng bé" đều được loại bỏ. Ký hiệu \( \frac{dS}{dt} \) của Leibniz giờ đây được hiểu là một <em>ký hiệu tổng thể</em> cho giới hạn này — không phải là một phân số thực sự, mà là biểu tượng của quá trình lấy giới hạn.
+                </div>
+            </div>
+
+            <div class="journey-step">
+                <span class="step-number">3</span>
+                <p>Dựa trên định nghĩa chặt chẽ của đạo hàm, ta định nghĩa lại các vi phân:</p>
+                <ul style="margin: 20px 0; padding-left: 20px;">
+                    <li><strong>Vi phân của đối số:</strong> \( dt = \Delta t \)</li>
+                    <li><strong>Vi phân của hàm số:</strong> \( dS = S'(t) \cdot dt \)</li>
+                </ul>
+                <p>Từ đây, ta có:</p>
+                <div class="math">
+                    $$ S'(t) = \frac{dS}{dt} $$
+                </div>
+                <p>Kết nối hoàn hảo giữa định nghĩa giới hạn và ký hiệu trực quan ban đầu!</p>
+
+                <p>Hơn nữa, định nghĩa chặt chẽ này cho phép mở rộng khái niệm vi phân ra không gian nhiều chiều, nơi khái niệm "<em>hướng</em>" trở nên quan trọng. Ví dụ, sự thay đổi độ cao \( dh \) của ngọn núi phụ thuộc vào hướng bạn đi \( (dx, dy) \). Vi phân toàn phần:</p>
+                <div class="math">
+                    $$ dh = \frac{\partial h}{\partial x} dx + \frac{\partial h}{\partial y} dy $$
+                </div>
+                <p>cho thấy sự thay đổi tổng thể là tổng hợp của các thay đổi theo từng "hướng" cơ sở, được đo lường bằng các đạo hàm riêng. Điều này cho thấy sức mạnh của một nền tảng toán học chặt chẽ.</p>
+            </div>
+        </section>
+
+        <div class="nav-buttons">
+            <button class="btn active" data-journey="1">Hành Trình 1<br><small>Trực quan sinh động</small></button>
+            <button class="btn" data-journey="2">Hành Trình 2<br><small>Bản chất toán học</small></button>
+            <button class="btn" data-journey="3">Hành Trình 3<br><small>Chặt chẽ với giới hạn</small></button>
+        </div>
+
+        <footer>
+            © 2025 Tiến sĩ Mai Thế Duy — Tài liệu giáo dục miễn phí cho học sinh yêu toán
+        </footer>
+
+    </div>
+
+    <script>
+        // Cập nhật ngày hôm nay
+        const now = new Date();
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('vi-VN');
+
+        // Chuyển chế độ tối/sáng
+        const themeToggle = document.getElementById('themeToggle');
+        const isDark = localStorage.getItem('theme') === 'dark';
+        if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+        themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.hasAttribute('data-theme');
+            document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+            themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+            localStorage.setItem('theme', isDark ? '' : 'light');
+
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise().catch(err => console.error('MathJax re-render error:', err));
+            }
+        });
+
+        // Điều hướng hành trình
+        const buttons = document.querySelectorAll('.btn');
+        const journeys = document.querySelectorAll('.journey-section');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const journeyId = btn.getAttribute('data-journey');
+                journeys.forEach(j => j.classList.remove('visible'));
+                document.getElementById(`journey${journeyId}`).classList.add('visible');
+
+                if (typeof MathJax !== 'undefined') {
+                    MathJax.typesetPromise().catch(err => console.error('MathJax typeset error:', err));
+                }
+            });
+        });
+
+        // Hiệu ứng hover trên SVG
+        const svgs = document.querySelectorAll('.illustration');
+        svgs.forEach(svg => {
+            const hoverGroup = svg.querySelector('.hover-group');
+            svg.addEventListener('mouseenter', () => {
+                hoverGroup.style.opacity = '1';
+            });
+            svg.addEventListener('mouseleave', () => {
+                hoverGroup.style.opacity = '0';
+            });
+        });
+
+        // Hiệu ứng scroll
+        const observerOptions = {
+            threshold: 0.2
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        journeys.forEach(journey => {
+            observer.observe(journey);
+        });
+
+        // Đảm bảo MathJax render sau DOM loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise().catch(err => console.error('MathJax render error:', err));
+            }
+        });
+
+        // Re-render khi resize
+        window.addEventListener('resize', () => {
+            if (typeof MathJax !== 'undefined') {
+                MathJax.typesetPromise().catch(err => console.error('MathJax resize re-render error:', err));
+            }
+        });
+
+        // Thêm Font Awesome
+        if (!document.getElementById('fontawesome')) {
+            const fa = document.createElement('link');
+            fa.id = 'fontawesome';
+            fa.rel = 'stylesheet';
+            fa.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css';
+            document.head.appendChild(fa);
+        }
+    </script>
+
+</body>
+</html>
